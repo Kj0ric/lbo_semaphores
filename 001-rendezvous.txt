@@ -1,0 +1,6 @@
+Thread A            Thread B
+
+statement a1        statement b1
+aArrived.signal()   bArrived.signal()
+bArrived.wait()     aArrived.wait()
+statement a2        statement b2
