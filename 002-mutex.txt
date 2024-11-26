@@ -1,0 +1,10 @@
+mutex = 1
+Thread A                Thread B
+
+mutex.wait()            mutex.wait()
+count = count + 1       count = count + 1  
+mutex.signal()          mutex.signal()
+
+mutex value:
+1 -> 0 (A continues ) -> -1 (B blocked) -> 0 (A wakes B) -> 1 
+Semaphore init value restored => reusable 
