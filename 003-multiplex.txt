@@ -1,0 +1,22 @@
+Use semaphores as barriers. Set the initial value to high. For example 2:
+
+mutex = 2
+Thread A            Thread B            Thread C
+mutex.wait()        mutex.wait()        mutex.wait()
+    # CS                # CS                # CS
+mutex.signal()      mutex.signal()      mutex.signal()
+
+mutex value trace:
+2
+1 (A decremented. Positive -> continue. A in its CS) 
+0 (B decremented. Positive -> continue. B in its CS)
+-1 (C decremented. Negative -> block. C cannot enter its CS until A or B signals)
+0 (A exits incrementing and waking C)
+1 (B exits incrementing, nobody is waiting)
+2 (C exits incrementing, nobody is waiting. Initial semaphore value is restored)
+
+What semaphore value represents:
+Positive -> number of additional threads that may enter 
+Negative -> number of threads waiting 
+
+Setting the semaphore initial value to n would generalize the solution.
