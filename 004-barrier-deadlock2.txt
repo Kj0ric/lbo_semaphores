@@ -1,0 +1,15 @@
+// Another bad solution: If reading count outside atomic section is problematic why not put it inside?
+
+rendezvous
+mutex.wait()
+    count = count + 1
+    if count == n: barrier.signal()
+    barrier.wait()
+    barrier.signal()
+mutex.signal()
+critical point
+
+// Why is it bad?
+Deadlock again. 
+Imagine a thread acquiring the mutex and incrementing the counter, then sleeping WHILE HOLDING THE MUTEX!
+No other threads would be able to go into the critical section and do anything.

@@ -1,0 +1,34 @@
+// A solution 
+rendezvous
+mutex.wait()
+    count = count + 1
+mutex.signal()
+
+if (count == n): barrier.signal()
+
+barrier.wait()
+barrier.signal()
+critical point 
+
+// What is different? 
+Now, the thread that is woken by the last thread sequentially signals another sleeping thread and goes into 
+critical point. The threads go into CP one by one, thus sequentially. 
+
+// After the nth thread, what state is the turnstile in? 
+Turnstile value:
+0 (initial)
+-1 (Th 1 count = 1, waits)
+-2 (Th 2 count = 2, waits)
+-3 (Th 3 count = 3, signals, wakes Th 1)
+-2 (Th 3 waits)
+-1 (Th 1 signals, wakes Th 2)
+0 (Th 2 signals, wakes Th 3)
+1 (Th 3 signals, wakes nobody)
+
+Hence, the last value of turnstile is 1, which is not the initial value which is 0.
+
+// Is there any way the barrier might be signaled more than once?
+Yes. Assume Thread n-1 is interrupted before reading count by a context switch and Thread n runs and increments
+the count to n. Then it signals. Then Thread n-1 reads count as n and signals, when it isn't supposed to. 
+The solution is to make the count check and signaling ATOMIC. Via mutexes or atomic instructions.
+

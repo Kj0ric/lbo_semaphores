@@ -1,0 +1,14 @@
+// A non-solution with deadlock
+rendezvous
+mutex.wait()
+    count = count + 1
+mutex.signal()
+
+if (count == n): barrier.signal()
+
+barrier.wait()
+critical point 
+
+// Why is it not a solution? 
+The last thread only increments the barrier by 1. After the incrementation, semaphore value is <0 and
+only one thread in waiting queue wakes up, and the others continue to sleep. Hence, DEADLOCK.
