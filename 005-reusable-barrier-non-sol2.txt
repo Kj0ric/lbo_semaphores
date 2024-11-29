@@ -16,12 +16,8 @@ mutex.signal()
 
 // How good from previous non-sol? What is problematic? 
 Now, only one thread can enter the if block and decrement the turnstile. However, that thread should not sleep
-while holding the mutex. Unfortunately it can happen!
+while holding the mutex. Unfortunately it can happen! ???????
 
 This code allows a precocious thread to pass through the second mutex, then loop around and pass through the first 
 mutex and the turnstile, effectively getting ahead of the other threads by a lap. Imagine this case:
-
-At the first iteration, before the last thread to pass critical point, say Tn, gets the mutex, a thread, say T1,
-starts its second iteration and gets the mutex, increments the counter and decrements the semaphore to 0. Then Tn gets
-the mutex and decrements the counter and execute wait and since the semaphore value is 0 Tn sleeps. At the next
-iteration count doesn't reach n and deadlock occurs.
+???????
