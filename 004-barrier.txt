@@ -10,7 +10,7 @@ barrier.wait()
 barrier.signal()
 critical point 
 
-// What is different? 
+// How is different? 
 Now, the thread that is woken by the last thread sequentially signals another sleeping thread and goes into 
 critical point. The threads go into CP one by one, thus sequentially. 
 

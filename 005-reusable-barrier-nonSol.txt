@@ -1,0 +1,32 @@
+// A non-solution
+
+mutex = Semaphore(1)
+turnstile = Semaphore(0)
+
+----------rendezvous------------
+mutex.wait()
+    count = count + 1
+mutex.signal()
+
+if count == n: turnstile.signal()
+
+turnstile.wait()
+turnstile.signal()
+
+mutex.wait()
+    count = count - 1
+mutex.signal()
+
+if count == 0: turnstile.wait()
+----------critical point------------
+
+// Why problematic? 
+First of all, multiple threads reading count as n and signaling multiple times is still possible, since we didn't 
+make reading and signaling atomic.
+
+Secondly, in a similar way, at the last line, multiple threads may go in if block and decrement the turnstile multiple 
+times, below 0, and sleep when they are not supposed to. Then at the next iteration count won't reach to n, 
+hence deadlock.
+
+Again, deadlock. After the last thread to exit the iteration it checks the count and sees it as 0, then sleeps.
+At the next iteration, the count won't reach n since a thread is stuck sleeping. Hence, deadlock.
